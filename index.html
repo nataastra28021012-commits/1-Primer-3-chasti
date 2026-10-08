@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Гипотеза и процесс</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    :root {
+      --blue-50: #eff6ff;
+      --blue-100: #dbeafe;
+      --blue-500: #2563eb;
+      --blue-700: #1d4ed8;
+      --border: #d7e1ef;
+      --text: #111827;
+      --muted: #374151;
+      --surface: #ffffff;
+      --notice: #f3f4f6;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background: #ffffff;
+      color: var(--text);
+      font-family: Inter, Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .page {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 40px 30px 56px;
+    }
+
+    .top-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: var(--surface);
+      padding: 18px;
+    }
+
+    .card-toggle {
+      width: 100%;
+      border: 0;
+      font: inherit;
+      text-align: left;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .reason {
+      width: 100%;
+      color: var(--text);
+      text-align: left;
+    }
+
+    .card-toggle {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0;
+      background: transparent;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .target-icon {
+      display: grid;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
+      place-items: center;
+      border-radius: 11px;
+      color: #ffffff;
+      background: #42A1A5;
+    }
+
+    .target-icon svg { width: 22px; height: 22px; }
+
+    .collapsible {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      transition: grid-template-rows 250ms ease, opacity 200ms ease, margin-top 250ms ease;
+    }
+
+    .collapsible__inner { overflow: hidden; }
+
+    .collapsible.is-open {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 18px;
+    }
+
+    .answer {
+      border: 1px solid #cfdded;
+      border-radius: 12px;
+      background: var(--blue-50);
+      padding: 13px 14px;
+    }
+
+    .process-card { padding: 18px; }
+
+    .process-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      font: inherit;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: left;
+    }
+
+    .process-title .target-icon {
+      width: 38px;
+      height: 38px;
+      flex-basis: 38px;
+    }
+
+    .process-content.is-open { margin-top: 12px; }
+
+    .process-description {
+      margin-bottom: 10px;
+      padding-left: 14px;
+      font-weight: 700;
+    }
+
+    .reasons {
+      display: grid;
+      gap: 10px;
+    }
+
+    .reason {
+      padding: 13px 14px;
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: #fff;
+    }
+
+    .notice-wrap {
+      display: grid;
+      grid-template-rows: 0fr;
+      opacity: 0;
+      margin: 0 auto;
+      max-width: 1060px;
+      transition: grid-template-rows 280ms ease, opacity 220ms ease, margin-top 280ms ease;
+    }
+
+    .notice-wrap.is-open {
+      grid-template-rows: 1fr;
+      opacity: 1;
+      margin-top: 22px;
+    }
+
+    .notice-inner { overflow: hidden; }
+
+    .notice {
+      display: flex;
+      gap: 13px;
+      align-items: flex-start;
+      border-radius: 12px;
+      background: var(--notice);
+      padding: 18px 22px;
+      color: var(--muted);
+    }
+
+    .notice-icon { flex: 0 0 auto; }
+    .notice strong { color: var(--text); }
+
+    button:focus-visible {
+      outline: 3px solid rgba(37, 99, 235, 0.45);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 700px) {
+      .page { padding: 24px 16px 36px; }
+      .top-grid { grid-template-columns: 1fr; gap: 16px; }
+      .card { padding: 16px; }
+      .notice { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <section class="top-grid" aria-label="Гипотеза и выполненная задача">
+      <article class="card">
+        <button class="card-toggle" type="button" aria-expanded="false" aria-controls="hypothesis-content">
+          <span class="target-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M22 12h-3M12 22v-3M2 12h3"></path>
+            </svg>
+          </span>
+          <span>Гипотеза</span>
+        </button>
+        <div class="collapsible" id="hypothesis-content" aria-hidden="true">
+          <div class="collapsible__inner">
+            <div class="answer">«Если отправим клиенту персональный отчёт<br>о финансовом эффекте, то он продлит подписку».</div>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <button class="card-toggle" type="button" aria-expanded="false" aria-controls="task-content">
+          <span class="target-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M22 12h-3M12 22v-3M2 12h3"></path>
+            </svg>
+          </span>
+          <span>Задача выполнена</span>
+        </button>
+        <div class="collapsible" id="task-content" aria-hidden="true">
+          <div class="collapsible__inner">
+            <div class="answer">Отчёт отправили за 14 дней<br>до окончания подписки.</div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="card process-card">
+      <button class="process-title" id="process-title" type="button" aria-expanded="false" aria-controls="process-content">
+        <span class="target-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="3"></circle><path d="M12 2v3M22 12h-3M12 22v-3M2 12h3"></path>
+          </svg>
+        </span>
+        <span>Почему может не подтвердится гипотеза?</span>
+      </button>
+      <div class="collapsible process-content" id="process-content" aria-hidden="true">
+        <div class="collapsible__inner">
+          <div class="process-description">Гипотеза может не подтвердиться по причинам процесса, а не идеи:</div>
+          <div class="reasons">
+            <div class="reason">
+              Клиент ещё не в режиме выбора<br>
+              (о продлении думает позже — когда нужно согласовать счёт или когда сервис перестал быть доступен).
+            </div>
+            <div class="reason">
+              Отчёт не дошёл/не был замечен (спам, перегруз уведомлениями).
+            </div>
+            <div class="reason">
+              Отчёт прочитан, но нет следующего шага (непонятно, как продлить, кому писать, где оплатить).
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="notice-wrap" id="reality-gap" aria-hidden="true">
+      <div class="notice-inner">
+        <aside class="notice" role="status">
+          <span class="notice-icon" aria-hidden="true">💡</span>
+          <div><strong>Это и есть разрыв между стратегией и реальностью:</strong><br>причинно‑следственная логика есть, а точка проверки в живом процессе не описана.</div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.querySelectorAll('.card-toggle').forEach((button) => {
+      const content = document.getElementById(button.getAttribute('aria-controls'));
+
+      button.addEventListener('click', () => {
+        const isOpen = button.getAttribute('aria-expanded') === 'true';
+        button.setAttribute('aria-expanded', String(!isOpen));
+        content.setAttribute('aria-hidden', String(isOpen));
+        content.classList.toggle('is-open', !isOpen);
+      });
+    });
+
+    const processTitle = document.getElementById('process-title');
+    const processContent = document.getElementById('process-content');
+
+    const realityGap = document.getElementById('reality-gap');
+
+    processTitle.addEventListener('click', () => {
+      const isOpen = processTitle.getAttribute('aria-expanded') === 'true';
+      processTitle.setAttribute('aria-expanded', String(!isOpen));
+      processContent.setAttribute('aria-hidden', String(isOpen));
+      processContent.classList.toggle('is-open', !isOpen);
+      realityGap.setAttribute('aria-hidden', String(isOpen));
+      realityGap.classList.toggle('is-open', !isOpen);
+    });
+  </script>
+</body>
+</html>
